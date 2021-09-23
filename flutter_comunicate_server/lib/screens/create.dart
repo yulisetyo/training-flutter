@@ -1,6 +1,8 @@
+// ignore_for_file: unused_import, file_names, prefer_const_constructors, prefer_const_constructors_in_immutables, use_key_in_widget_constructors
+
 import 'package:flutter/material.dart';
-import '../environment.dart';
-import '../widgets/appform.dart';
+import '../Environment.dart';
+import '../forms/AppForm.dart';
 import 'package:http/http.dart' as http;
 
 class Create extends StatefulWidget {
@@ -13,30 +15,33 @@ class Create extends StatefulWidget {
 }
 
 class _CreateState extends State<Create> {
-  final formKey = GlobalKey<FormState>();
-  // properties
-  TextEditingController? nameController = new TextEditingController();
-  TextEditingController? ageController = new TextEditingController();
-  TextEditingController? emailController = new TextEditingController();
-  TextEditingController? phoneController = new TextEditingController();
+  final formkey = GlobalKey<FormState>();
+  //props
+  TextEditingController? nameController = TextEditingController();
+  TextEditingController? ageController = TextEditingController();
+  TextEditingController? emailController = TextEditingController();
+  TextEditingController? phoneController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Create Student'),
+        title: Text('Rekam Baru'),
       ),
       bottomNavigationBar: BottomAppBar(
         child: ElevatedButton(
           onPressed: () {
-            // perintah untuk proses create
-            if (formKey.currentState!.validate()) {
-              onCreateConfirm(context);
+            //perintah untuk create
+            if (formkey.currentState!.validate()) {
+              onCreate(context);
             }
           },
           child: Text(
             'Create',
-            style: TextStyle(fontSize: 18.0, color: Colors.white),
+            style: TextStyle(
+              fontSize: 18.0,
+              color: Colors.white,
+            ),
           ),
         ),
       ),
@@ -45,9 +50,9 @@ class _CreateState extends State<Create> {
         padding: EdgeInsets.all(20.0),
         child: Center(
           child: Padding(
-            padding: EdgeInsets.all(12.0),
+            padding: EdgeInsets.all(10.0),
             child: AppForm(
-              formKey: formKey,
+              formKey: formkey,
               nameController: nameController,
               ageController: ageController,
               emailController: emailController,
@@ -59,22 +64,20 @@ class _CreateState extends State<Create> {
     );
   }
 
-  void onCreateConfirm(context) async {
+  void onCreate(BuildContext context) async {
     await createStudent();
+    //redirect
     Navigator.of(context)
         .pushNamedAndRemoveUntil('/', (Route<dynamic> route) => false);
   }
 
   Future createStudent() async {
     final url = '${Environment.URL_PREFIX}/create.php';
-    return await http.post(
-      Uri.parse(url),
-      body: {
-        "name": nameController!.text,
-        "age": ageController!.text,
-        "email": emailController!.text,
-        "phone": phoneController!.text,
-      },
-    );
+    return await http.post(Uri.parse(url), body: {
+      "name": nameController!.text,
+      "age": ageController!.text,
+      "email": emailController!.text,
+      "phone": phoneController!.text
+    });
   }
 }

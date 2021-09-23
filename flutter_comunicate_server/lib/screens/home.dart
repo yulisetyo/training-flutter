@@ -7,6 +7,7 @@ import 'dart:convert';
 import '../models/Students.dart';
 import '../Environment.dart';
 import 'details.dart';
+import 'create.dart';
 
 class Home extends StatefulWidget {
   Home({Key? key}) : super(key: key);
@@ -90,6 +91,17 @@ class _HomeState extends State<Home> {
             );
           },
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () {
+          //mengarahkan ke create
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => Create(),
+              ));
+        },
       ),
     );
   }
